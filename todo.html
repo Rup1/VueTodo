@@ -70,7 +70,11 @@
   var taskApp = new Vue({
     el: '#taskApp',
     data: {
-      tasks: []
+      tasks: [
+        { name: 'gotta do this task first', done: false },
+        { name: 'buy some pet food', done: false },
+        { name: 'install fishtank in living room', done: false },
+      ]
     },
     methods: {
       addTask: function (e) {
@@ -104,14 +108,20 @@
       },
       getTasks: function () {
         var savedTasks = localStorage.getItem("Saved Tasks");
-        this.tasks = JSON.parse(savedTasks);
+        
+        if(localStorage.getItem("Saved Tasks") === null) {
+          console.log('no tasks saved');
+        }else{
+          console.log('You have some tasks');
+          this.tasks = JSON.parse(savedTasks);
+        }
       }
     },
     mounted: function() {
       this.getTasks();
     }
   
-  }); 
+  });
 </script>
     
 </body>
