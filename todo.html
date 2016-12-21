@@ -13,11 +13,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 
-  <!-- font awesome -->
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
   <!-- Vue.js script source -->
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+  <style>
+    .taskDone {
+      text-decoration: line-through;
+    }
+  </style>
 
 </head>
 
@@ -78,7 +81,6 @@
     },
     methods: {
       addTask: function (e) {
-        var input = document
         e.preventDefault();
         this.tasks.push({
           name: this.tasks.userInput,
@@ -93,9 +95,13 @@
       },
       completeTask: function (i) {
         if(i.done === false){
-          i.done = true;          
+          i.done = true;    
+          this.tasks.push(i);
+          this.tasks.splice(this.tasks.indexOf(i), 1);
         }else {
           i.done = false;
+          this.tasks.splice(this.tasks.indexOf(i), 1);
+          this.tasks.splice(0, 0, i);
         }
         this.saveAll();
       },
