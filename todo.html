@@ -50,7 +50,7 @@
         <th>Delete</th>
       </thead>
 
-      <tbody v-for='task in tasks'>
+      <tbody v-for='task in pendingTasks'>
         <tr>
           <td><input type="checkbox" v-on:click="completeTask(task)" v-model="task.done"></td>
           <td><span :class="{ taskDone: task.done}">{{ task.name }}</span></td>
@@ -58,6 +58,28 @@
         </tr>
       </tbody>
     </table>
+
+
+
+
+
+
+<table class="table">
+  <thead>
+    <th>Checkmark Done</th>
+    <th>Task Name</th>
+    <th>Delete</th>
+  </thead>
+
+  <tbody v-for='task in completedTasks'>
+      <tr>
+        <td><input type="checkbox" v-on:click="completeTask(task)" v-model="task.done"></td>
+        <td><span :class="{ taskDone: task.done}">{{ task.name }}</span></td>
+        <td><button class="btn btn-danger btn-block" v-on:click="deleteTask(task)">Delete</button></td>
+      </tr>
+  </tbody>
+
+</table>
     
     <button class="btn btn-block" v-on:click="saveAll()">Save All</button>    
     <button class="btn btn-block btn-danger" v-on:click="clearAll()">Clear All</button>
@@ -96,12 +118,8 @@
       completeTask: function (i) {
         if(i.done === false){
           i.done = true;    
-          this.tasks.push(i);
-          this.tasks.splice(this.tasks.indexOf(i), 1);
         }else {
           i.done = false;
-          this.tasks.splice(this.tasks.indexOf(i), 1);
-          this.tasks.splice(0, 0, i);
         }
         this.saveAll();
       },
@@ -123,6 +141,16 @@
         }
       }
     },
+
+    computed: {
+      completedTasks() {
+        return this.tasks.filter(task => task.done);
+      },
+      pendingTasks() {
+        return this.tasks.filter(task => ! task.done)
+      }
+    },
+
     mounted: function() {
       this.getTasks();
     }
